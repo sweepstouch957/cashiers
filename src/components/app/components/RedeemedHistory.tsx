@@ -1,6 +1,6 @@
 "use client";
 
-import { Award, Calendar, CheckCircle } from 'lucide-react';
+import { Award, Calendar, CheckCircle, Zap, TrendingUp, Sparkles } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface RedeemedReward {
@@ -53,6 +53,64 @@ export function RedeemedHistory({ redeemedRewards }: RedeemedHistoryProps) {
                 <span className="text-sm text-muted-foreground">Points Spent</span>
               </div>
               <p className="text-2xl font-bold text-[#FC0680]">{totalPointsSpent}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Earn Extra Card */}
+      <div className="px-6 mb-8">
+        <div className="rounded-2xl p-5 shadow-xl bg-gradient-to-br from-[#FC0680] to-[#C10063] text-white">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="inline-flex items-center gap-1.5 bg-[#FFD43B] text-[#4A2A00] font-semibold text-xs px-3 py-1 rounded-full">
+              <Zap className="w-3.5 h-3.5" />
+              HOT OPPORTUNITY
+            </span>
+            <span className="inline-flex items-center gap-1.5 bg-white/15 text-white text-xs px-3 py-1 rounded-full">
+              <TrendingUp className="w-3.5 h-3.5" />
+              Earn Extra
+            </span>
+          </div>
+
+          <h2 className="text-xl font-extrabold mb-3">
+            💰 Want to earn <span className="text-white">MORE</span> points?
+          </h2>
+          <p className="text-white/90 leading-relaxed mb-5">
+            We have extra work available! Register more customers now and{' '}
+            <span className="font-bold">double your point earnings</span> 🚀
+          </p>
+
+          <a
+            href="https://jobs.sweepstouch.com"
+            target="_blank"
+            rel="noreferrer"
+            className="block"
+          >
+            <button
+              type="button"
+              className="w-full bg-white text-[#FC0680] font-bold rounded-xl py-4 px-4 shadow-md active:scale-[0.99] transition"
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                Yes, I want extra work!
+                <Zap className="w-5 h-5" />
+              </span>
+            </button>
+          </a>
+
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="rounded-xl bg-white/10 px-4 py-3">
+              <div className="flex items-center gap-2 font-bold">
+                <Zap className="w-4 h-4" />
+                2x Points
+              </div>
+              <div className="text-xs text-white/85 mt-0.5">Double rewards</div>
+            </div>
+            <div className="rounded-xl bg-white/10 px-4 py-3">
+              <div className="flex items-center gap-2 font-bold">
+                <Sparkles className="w-4 h-4" />
+                Bonus
+              </div>
+              <div className="text-xs text-white/85 mt-0.5">Exclusive rewards</div>
             </div>
           </div>
         </div>

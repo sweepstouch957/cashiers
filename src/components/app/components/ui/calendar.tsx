@@ -60,12 +60,13 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
-        ),
+        // react-day-picker v9 uses a single `Chevron` component (instead of IconLeft/IconRight)
+        Chevron: ({ className, orientation, ...chevronProps }: any) =>
+          orientation === "left" ? (
+            <ChevronLeft className={cn("size-4", className)} {...chevronProps} />
+          ) : (
+            <ChevronRight className={cn("size-4", className)} {...chevronProps} />
+          ),
       }}
       {...props}
     />
