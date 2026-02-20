@@ -74,14 +74,6 @@ export function MainDashboard({
     }
   };
 
-  const handleQuickRegister = () => {
-    // Quick register always assumes a new number (for demo purposes)
-    // In production, this would integrate with the actual scanning system
-    const mockPhoneNumber = `(555) ${Math.floor(100 + Math.random() * 900)}-${Math.floor(1000 + Math.random() * 9000)}`;
-    onAddRegistration(mockPhoneNumber, true, false); // isNew=true, isManual=false
-    onAddPoints(1);
-  };
-
   const handleManualRegistration = () => {
     setShowManualModal(true);
   };
@@ -239,14 +231,6 @@ export function MainDashboard({
       <div className="px-6 mt-6">
         <h3 className="mb-4 text-foreground">Quick Actions</h3>
         <div className="space-y-3">
-          <button
-            onClick={handleQuickRegister}
-            className="w-full bg-gradient-to-r from-[#FC0680] to-[#FF4DA6] text-white py-4 rounded-xl shadow-lg hover:shadow-xl active:scale-98 transition-all flex items-center justify-center gap-2"
-          >
-            <UserPlus className="w-5 h-5" />
-            +1 point
-          </button>
-
           <button
             onClick={handleManualRegistration}
             className="w-full bg-gradient-to-r from-[#FC0680] to-[#FF4DA6] text-white py-4 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 active:scale-98"
