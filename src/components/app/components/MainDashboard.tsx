@@ -4,18 +4,9 @@ import { useState } from 'react';
 import { Sparkles, TrendingUp, UserPlus, Gift } from 'lucide-react';
 import { UserMenu } from './UserMenu';
 import { ManualRegistrationModal } from './ManualRegistrationModal';
+import type { DailyStats } from '@/interfaces';
 
 const logo = '/assets/8750bb9a23d750ca362e5565b58d2d4ce0cb21c4.png';
-
-
-interface DailyStats {
-  date: string;
-  totalRegistrations: number;
-  newNumbers: number;
-  existingNumbers: number;
-  manualRegistrations: number;
-  shiftRegistrations: number;
-}
 
 interface MainDashboardProps {
   totalPoints: number;

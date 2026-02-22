@@ -2,15 +2,7 @@
 
 import { Award, Calendar, CheckCircle } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-
-interface RedeemedReward {
-  id: string;
-  name: string;
-  description: string;
-  pointsSpent: number;
-  redeemedDate: string;
-  imageUrl: string;
-}
+import type { RedeemedReward } from '@/interfaces';
 
 interface RedeemedHistoryProps {
   redeemedRewards: RedeemedReward[];
