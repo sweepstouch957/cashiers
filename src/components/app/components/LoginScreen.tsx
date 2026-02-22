@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-import { AlertCircle, Loader2 } from 'lucide-react';
-import { useAuth } from '@/context/auth-context';
+import { useState } from "react";
+import { AlertCircle, Loader2 } from "lucide-react";
+import { useAuth } from "@/context/auth-context";
 
-const logo = '/assets/8750bb9a23d750ca362e5565b58d2d4ce0cb21c4.png';
+const logo = "/assets/8750bb9a23d750ca362e5565b58d2d4ce0cb21c4.png";
 
 export function LoginScreen() {
   const { login, error: authError } = useAuth();
-  const [cashierCode, setCashierCode] = useState('');
+  const [cashierCode, setCashierCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export function LoginScreen() {
       await login(undefined, undefined, cashierCode);
     } catch (err: unknown) {
       const errorMessage =
-        err instanceof Error ? err.message : 'Error al iniciar sesión.';
+        err instanceof Error ? err.message : "Error al iniciar sesión.";
       setLocalError(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -79,8 +79,8 @@ export function LoginScreen() {
                 onChange={handleCodeChange}
                 disabled={isSubmitting}
                 className={`w-full px-4 py-4 bg-input-background rounded-xl border-2 transition-all text-center text-xl tracking-wider font-medium ${displayError
-                  ? 'border-red-500 focus:ring-red-500'
-                  : 'border-border focus:ring-[#FC0680]'
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-border focus:ring-[#FC0680]"
                   } focus:outline-none focus:ring-2 disabled:opacity-50`}
                 placeholder="Enter your code"
                 required
@@ -105,7 +105,7 @@ export function LoginScreen() {
                   Logging in...
                 </>
               ) : (
-                'Login'
+                "Login"
               )}
             </button>
           </form>
@@ -113,9 +113,7 @@ export function LoginScreen() {
 
         {/* Footer */}
         <div className="mt-10 text-center text-white/90">
-          <p className="text-base font-medium">
-            Start earning rewards today!
-          </p>
+          <p className="text-base font-medium">Start earning rewards today!</p>
         </div>
       </div>
     </div>
