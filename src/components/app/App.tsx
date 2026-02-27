@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useAuth } from '@/context/auth-context';
 import { LoginScreen } from './components/LoginScreen';
 import { MainDashboard } from './components/MainDashboard';
 import { ParticipationHistory } from './components/ParticipationHistory';
@@ -9,7 +10,8 @@ import { RedeemedHistory } from './components/RedeemedHistory';
 import { AchievementModal } from './components/AchievementModal';
 import { TvAchievementModal } from './components/TvAchievementModal';
 import { RewardAchievementModal } from './components/RewardAchievementModal';
-import { Home, History, Gift, Award } from 'lucide-react';
+import { Home, History, Gift, Award, Loader2 } from 'lucide-react';
+import type { Screen, Registration, DailyStats, RedeemedReward, RewardMilestone } from '@/interfaces';
 
 const bluetoothSpeakerImg = '/assets/b41f0840ee1ec3b2591756608ba9369b6039b239.png';
 const wirelessEarbudsImg = '/assets/e83506e82c30c2bae54ad5ee0532834af2e58e0b.png';
@@ -18,12 +20,10 @@ const travelMugSocksGiftBoxImg = '/assets/f8870a94021208a11f892c069c9942fee61c7a
 const stanleyQuencherImg = '/assets/55aff019b1abef550d68dc89fcd201509dc1b512.png';
 const electricSpinningScrubberImg = '/assets/08eb4c5478dde1338e613170b8c0ddee68b754d3.png';
 const sephoraGiftCardImg = '/assets/f756bb15c98d5420a2a71bbf8f5c43bb928254e0.png';
-const workOrthoticInsolesImg = '/assets/ce7cd9f8ee8a3bf44c875972964a8b983cc3b33e.png';
 const solDeJaneiroJetSetImg = '/assets/b9ba81748ddd4e996ebda7620e4db5f7c7657cc8.png';
 const ufreeBeardTrimmerImg = '/assets/87b30d25c74ca0e7b91d57194160bcc23d20c057.png';
 const homeSpaKitImg = '/assets/487bd229e31a56ac2ed0047cf39aed5e4acec7d0.png';
 const olaplexKitImg = '/assets/6eff6cfa66ae70c380a4370970535622ac4f9369.png';
-const frameoPictureFrameImg = '/assets/7a0ebdf2c7dd8f029d18f42adcf78304e2d8381e.png';
 const sgvMiniProjectorImg = '/assets/b87089a3797aa827fb6d4b6bd4af345993aa61d5.png';
 const wavytalkSteamBrushImg = '/assets/2a6c79032ee91f0ef54e089ad1f26cfa49cd6cbe.png';
 const skinCareKitImg = '/assets/5c5c216f5d640e8ac572977e46123ef939b283b7.png';
@@ -33,52 +33,20 @@ const trulyShaveSetImg = '/assets/01b488057ac31473e3d1ddcbc124787696ef4689.png';
 const gourmiaAirFryerImg = '/assets/287a26709336827bbe1eb15b0301cc3c6b4f336e.png';
 const samsungTvImg = '/assets/ab0cbb27441fa385f8f8205736b4c683db84b5b4.png';
 
-type Screen = 'login' | 'dashboard' | 'history' | 'rewards' | 'redeemed';
-
-interface Registration {
-  phoneNumber: string;
-  isNew: boolean;
-  isManual: boolean;
-  timestamp: Date;
-}
-
-interface DailyStats {
-  date: string;
-  totalRegistrations: number;
-  newNumbers: number;
-  existingNumbers: number;
-  manualRegistrations: number;
-  shiftRegistrations: number;
-  registrations: Registration[];
-}
-
-interface RedeemedReward {
-  id: string;
-  name: string;
-  description: string;
-  pointsSpent: number;
-  redeemedDate: string;
-  imageUrl: string;
-}
-
-interface RewardMilestone {
-  name: string;
-  description: string;
-  pointsRequired: number;
-  imageUrl: string;
-}
-
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, logout, loading } = useAuth();
+
   const [currentScreen, setCurrentScreen] = useState<Screen>('dashboard');
   const [showAchievementModal, setShowAchievementModal] = useState(false);
   const [showTvAchievementModal, setShowTvAchievementModal] = useState(false);
   const [showRewardModal, setShowRewardModal] = useState(false);
   const [currentRewardAchieved, setCurrentRewardAchieved] = useState<RewardMilestone | null>(null);
   const [totalPoints, setTotalPoints] = useState(28);
-  const [userName, setUserName] = useState('Sarah Johnson');
-  const [userPhoto, setUserPhoto] = useState<string | null>(null);
   const [redeemedRewards, setRedeemedRewards] = useState<RedeemedReward[]>([]);
+
+  // Derive user info from auth context
+  const userName = user ? `${user.firstName} ${user.lastName}` : '';
+  const userPhoto: string | null = null; // API doesn't support profileImage on User yet
 
   // All reward milestones
   const rewardMilestones: RewardMilestone[] = [
@@ -152,19 +120,9 @@ export default function App() {
     }
   ]);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setCurrentScreen('dashboard');
-  };
-
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     setCurrentScreen('dashboard');
-    // Optionally reset other states if needed
-  };
-
-  const handlePhotoUpload = (photo: string) => {
-    setUserPhoto(photo);
   };
 
   const handleAddPoints = (points: number) => {
@@ -236,7 +194,7 @@ export default function App() {
               existingNumbers: !isNew ? stats.existingNumbers + 1 : stats.existingNumbers,
               manualRegistrations: isManual ? stats.manualRegistrations + 1 : stats.manualRegistrations,
               shiftRegistrations: !isManual ? stats.shiftRegistrations + 1 : stats.shiftRegistrations,
-              registrations: [...stats.registrations, newRegistration]
+              registrations: [...(stats.registrations || []), newRegistration]
             };
           }
           return stats;
@@ -259,8 +217,18 @@ export default function App() {
     });
   };
 
-  if (!isLoggedIn) {
-    return <LoginScreen onLogin={handleLogin} />;
+  // Show loading spinner while checking for existing session
+  if (loading) {
+    return (
+      <div className="flex flex-col h-screen items-center justify-center bg-gradient-to-br from-[#FC0680] to-[#FF4DA6]">
+        <Loader2 className="w-12 h-12 text-white animate-spin" />
+      </div>
+    );
+  }
+
+  // Show login screen if not authenticated
+  if (!user) {
+    return <LoginScreen />;
   }
 
   return (
@@ -274,7 +242,7 @@ export default function App() {
             onNavigateToRewards={() => setCurrentScreen('rewards')}
             userName={userName}
             userPhoto={userPhoto}
-            onPhotoUpload={handlePhotoUpload}
+            onPhotoUpload={() => {}}
             onLogout={handleLogout}
             onAddRegistration={handleAddRegistration}
             todayStats={dailyStats.find(s => s.date === '2026-02-17')}

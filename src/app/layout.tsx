@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '../styles/index.css';
+import { Layout } from '@/components/app/components/layout/Container';
 
 export const metadata: Metadata = {
   title: 'Supermarket Cashier Motivation App',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Layout>{children}</Layout>
+        </body>
     </html>
   );
 }

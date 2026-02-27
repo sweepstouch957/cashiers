@@ -4,6 +4,7 @@ import { Lock, Gift, Sparkles, ChevronRight, LockKeyhole, BookOpen, X } from 'lu
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useState } from 'react';
 import { CatalogViewer } from './CatalogViewer';
+import type { Reward } from '@/interfaces';
 
 const bluetoothSpeakerImg = '/assets/b41f0840ee1ec3b2591756608ba9369b6039b239.png';
 const wirelessEarbudsImg = '/assets/e83506e82c30c2bae54ad5ee0532834af2e58e0b.png';
@@ -33,14 +34,6 @@ interface RewardsSectionProps {
   onRedeem: (reward: { id: string; name: string; description: string; pointsRequired: number; imageUrl: string }) => void;
 }
 
-interface Reward {
-  id: string;
-  name: string;
-  description: string;
-  pointsRequired: number;
-  imageUrl: string;
-  isFeatured?: boolean;
-}
 
 export function RewardsSection({ totalPoints, onRedeem }: RewardsSectionProps) {
   const [showConfirmModal, setShowConfirmModal] = useState(false);

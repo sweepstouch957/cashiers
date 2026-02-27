@@ -1,15 +1,7 @@
 "use client";
 
 import { Calendar, UserPlus, Clock, CheckCircle, Users, Phone, Tablet } from 'lucide-react';
-
-interface DailyStats {
-  date: string;
-  totalRegistrations: number;
-  newNumbers: number;
-  existingNumbers: number;
-  manualRegistrations: number;
-  shiftRegistrations: number;
-}
+import type { DailyStats } from '@/interfaces';
 
 interface ParticipationHistoryProps {
   dailyStats: DailyStats[];
