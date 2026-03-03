@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
+import { useI18n } from "@/i18n/i18n-context";
+import { LanguageToggle } from "./LanguageToggle";
 
 const logo = "/assets/8750bb9a23d750ca362e5565b58d2d4ce0cb21c4.png";
 
 export function LoginScreen() {
   const { login, error: authError } = useAuth();
+  const { t } = useI18n();
   const [cashierCode, setCashierCode] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -20,10 +23,8 @@ export function LoginScreen() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!cashierCode.trim()) return;
-
     setIsSubmitting(true);
     setLocalError(null);
-
     try {
       await login(undefined, undefined, cashierCode);
     } catch (err: unknown) {
@@ -39,6 +40,11 @@ export function LoginScreen() {
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br from-[#FC0680] to-[#FF4DA6] p-6">
+      {/* Language toggle — top right */}
+      <div className="flex justify-end">
+        <LanguageToggle />
+      </div>
+
       <div className="flex-1 flex flex-col justify-center items-center max-w-md mx-auto w-full">
         {/* Logo */}
         <div className="mb-10 text-center">
@@ -50,17 +56,15 @@ export function LoginScreen() {
             />
           </div>
           <h1 className="text-white text-2xl font-semibold mb-3">
-            Cashier Rewards
+            {t.login.title}
           </h1>
-          <p className="text-white/90 text-base">
-            Enter your cashier code to start earning
-          </p>
+          <p className="text-white/90 text-base">{t.login.subtitle}</p>
         </div>
 
         {/* Login Form */}
         <div className="w-full bg-white rounded-3xl shadow-2xl p-8">
           <h2 className="text-center mb-8 text-foreground text-xl font-semibold">
-            Welcome Back
+            {t.login.welcomeBack}
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -69,7 +73,7 @@ export function LoginScreen() {
                 htmlFor="cashierCode"
                 className="block mb-3 text-foreground text-center font-medium"
               >
-                Cashier Code
+                {t.login.cashierCode}
               </label>
 
               <input
@@ -79,10 +83,10 @@ export function LoginScreen() {
                 onChange={handleCodeChange}
                 disabled={isSubmitting}
                 className={`w-full px-4 py-4 bg-input-background rounded-xl border-2 transition-all text-center text-xl tracking-wider font-medium ${displayError
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-border focus:ring-[#FC0680]"
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-border focus:ring-[#FC0680]"
                   } focus:outline-none focus:ring-2 disabled:opacity-50`}
-                placeholder="Enter your code"
+                placeholder={t.login.codePlaceholder}
                 required
               />
 
@@ -102,10 +106,10 @@ export function LoginScreen() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Logging in...
+                  {t.login.loggingIn}
                 </>
               ) : (
-                "Login"
+                t.login.loginBtn
               )}
             </button>
           </form>
@@ -113,7 +117,7 @@ export function LoginScreen() {
 
         {/* Footer */}
         <div className="mt-10 text-center text-white/90">
-          <p className="text-base font-medium">Start earning rewards today!</p>
+          <p className="text-base font-medium">{t.login.footer}</p>
         </div>
       </div>
     </div>

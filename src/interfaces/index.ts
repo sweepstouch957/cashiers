@@ -11,6 +11,7 @@ export interface User {
   email: string;
   phoneNumber: string;
   role: string;
+  profileImage?: string;
   store?: {
     _id: string;
     name: string;
@@ -47,6 +48,7 @@ export interface DailyStats {
   existingNumbers: number;
   manualRegistrations: number;
   shiftRegistrations: number;
+  pointsEarned?: number;
   registrations?: Registration[];
 }
 

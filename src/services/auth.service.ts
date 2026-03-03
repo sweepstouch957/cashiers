@@ -20,6 +20,11 @@ export const getMe = async () => {
   return res.data;
 };
 
+export const updateProfile = async (id: string, profile: any) => {
+  const res = await apiClient.patch(`/auth/users/profile/${id}`, profile);
+  return res.data;
+};
+
 export const logout = () => {
   Cookies.remove("auth_token");
   localStorage.removeItem("auth_token");
